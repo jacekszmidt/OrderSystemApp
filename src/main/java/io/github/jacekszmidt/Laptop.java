@@ -1,20 +1,19 @@
 package io.github.jacekszmidt;
 
-public class Laptop extends PersonalComputer {
+public class Laptop {
     private String model;
     private String serialNumber;
+    private boolean cleanData;
 
-    public Laptop(String cpu, String motherBoard, String memoryRam, String psu, String disc, boolean cleanData, String model, String serialNumber) {
-        super(cpu, motherBoard, memoryRam, psu, disc, cleanData);
-        this.model = model;
-        this.serialNumber = serialNumber;
+    public Laptop(String name) {
+        this.model = name;
     }
 
     public String getModel() {
         return model;
     }
 
-    public void setModel(String model) {
+    public void setModel() {
         this.model = model;
     }
 
@@ -24,5 +23,13 @@ public class Laptop extends PersonalComputer {
 
     public void setSerialNumber(String serialNumber) {
         this.serialNumber = serialNumber;
+    }
+
+    public boolean isCleanData() {
+        return cleanData;
+    }
+
+    public void setCleanData(boolean cleanData) {
+        this.cleanData = cleanData;
     }
 }
