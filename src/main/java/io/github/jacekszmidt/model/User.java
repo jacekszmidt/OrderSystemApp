@@ -1,9 +1,10 @@
-package io.github.jacekszmidt;
+package io.github.jacekszmidt.model;
 
-public class User{
+public class User {
     private String name;
     private String lastName;
     private String phoneNumber;
+    private String confirmData;
 
     public User(String name, String lastName, String phoneNumber) {
         this.name = name;
@@ -34,4 +35,23 @@ public class User{
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
+    public String getConfirmData() {
+        return confirmData;
+    }
+
+    public void setConfirmData(String confirmData) {
+        this.confirmData = confirmData;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "name='" + name + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", confirmData='" + confirmData + '\'' +
+                '}';
+    }
 }
+
