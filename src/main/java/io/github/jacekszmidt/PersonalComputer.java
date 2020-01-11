@@ -15,48 +15,28 @@ public class PersonalComputer {
         this.psu = psu;
         this.disc = disc;
         this.cleanData = cleanData;
-
-        this.cpu = setCpu();
-        this.motherBoard = setMotherBoard();
-        this.memoryRam = setMemoryRam();
-        this.psu = setPsu();
-        this.disc = setDisc();
-        this.cleanData = askCleanData();
     }
 
-    public String getCpu() {
-        return cpu;
-    }
-
-    private String setCpu() {
+    private void setCpu() {
         System.out.print("Wprowadzono model cpu: ");
-        return this.cpu;
     }
 
-    private String setMotherBoard() {
+    private void setMotherBoard() {
         System.out.print("Wprowadzono model plyty glownej: " + this.motherBoard);
-        return null;
     }
 
-    private String setMemoryRam() {
+    private void setMemoryRam() {
         System.out.print("Wprowadzono model pamieci Ram: " + this.memoryRam);
-        return null;
     }
 
-    private String setPsu() {
+    private void setPsu() {
         System.out.println("Wprowadzono model zasilacza: " + this.psu);
-        return null;
     }
 
-    private String setDisc() {
+    private void setDisc() {
         System.out.println("Wprowadzono model dysku: " + this.disc);
-        return null;
-    }
-
-    public String askCleanData() {
-        System.out.println("Mozna usuwac dane? " + this.cleanData);
-        return null;
     }
 }
+
 
 

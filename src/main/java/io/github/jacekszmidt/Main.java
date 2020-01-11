@@ -12,7 +12,17 @@ public class Main {
         System.out.print("Podaj numer telefonu klienta: ");
         String phoneNumber = sc.nextLine();
         User user = new User(name, lastName, phoneNumber);
-        }
+        user.setName();
+        user.setLastName();
+        user.setPhoneNumber();
+        user.confirmData();
+        UserService.computerChoice();
+        user.confirmData();
     }
+}
+
+
+
+
 
 
