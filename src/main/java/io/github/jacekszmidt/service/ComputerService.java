@@ -14,7 +14,6 @@ public class ComputerService {
     private static final Scanner SCANNER = new Scanner(System.in);
 
     private PersonalComputer getPersonalComputer() {
-        // todo there should be validation, is everything not empty!
         LOGGER.info("Podaj model procesora: ");
         String cpu = SCANNER.nextLine();
         LOGGER.info("Podaj model plyty glownej: ");

@@ -13,21 +13,22 @@ public class UserService {
     private static final Scanner SCANNER = new Scanner(System.in);
     private static final List<User> USERS = new ArrayList<>();
 
-//    public void confirmData() { //todo use this validation during adding users
-//        System.out.print("Czy wszystkie dane sie zgadzaja? Y/N? ");
-//        Scanner sc = new Scanner(System.in);
-//        String checkData = sc.nextLine();
-//        if (checkData.equals("Y") || checkData.equals("y")) {
-//            LOGGER.info("Dane zatwierdzone!");
-//        } else if (checkData.equals("N") || checkData.equals("n")){
-//            LOGGER.info("Wprowadzone dane nie zostaly zatwierdzone");
-//        }
-//    }
+    public void confirmData() {
+        System.out.print("Czy wszystkie dane sie zgadzaja? Y/N? ");
+        Scanner sc = new Scanner(System.in);
+        String checkData = sc.nextLine();
+        if (checkData.equals("Y") || checkData.equals("y")) {
+            LOGGER.info("Dane zatwierdzone!");
+        } else if (checkData.equals("N") || checkData.equals("n")){
+            LOGGER.info("Wprowadzone dane nie zostaly zatwierdzone");
+        }
+    }
 
     public void addUser() {
         User user = addNewUser();
         USERS.add(user);
         LOGGER.info("New user was added: {}", user);
+        confirmData();
     }
 
     private User addNewUser() {

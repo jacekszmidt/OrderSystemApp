@@ -14,8 +14,12 @@ public class LaptopService {
     private static final Scanner SCANNER = new Scanner(System.in);
 
     private Laptop getLaptop() {
-        LOGGER.info("Podaj model laptopa: "); // todo add here laptop validation
+        LOGGER.info("Podaj model laptopa: ");
         String model = SCANNER.nextLine();
+        if (model.isEmpty()){
+            LOGGER.info("Nie podales modelu laptopa, wprowadz model jeszcze raz");
+            model = SCANNER.nextLine();
+        }
         LOGGER.info("Podaj numer seryjny laptopa: ");
         String serialNumber = SCANNER.nextLine();
         LOGGER.info("Czy mozna usuwac dane? ");
