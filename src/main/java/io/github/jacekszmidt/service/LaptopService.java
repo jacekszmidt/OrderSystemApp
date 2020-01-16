@@ -16,7 +16,7 @@ public class LaptopService {
     private Laptop getLaptop() {
         LOGGER.info("Podaj model laptopa: ");
         String model = SCANNER.nextLine();
-        if (model.isEmpty()){
+        while (model.isEmpty()){
             LOGGER.info("Nie podales modelu laptopa, wprowadz model jeszcze raz");
             model = SCANNER.nextLine();
         }
