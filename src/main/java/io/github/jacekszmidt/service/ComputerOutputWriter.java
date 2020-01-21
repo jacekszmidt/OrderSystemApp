@@ -5,9 +5,9 @@ import io.github.jacekszmidt.model.PersonalComputer;
 import io.github.jacekszmidt.model.User;
 
 public interface ComputerOutputWriter {
-    void writeOutput(User user, Laptop laptop);
+    void writeOutput(User user, UserService userService, Laptop laptop);
 
-    void writeOutput(User user, PersonalComputer personalComputer);
+    void writeOutput(User user,UserService userService, PersonalComputer personalComputer);
 }
 
 

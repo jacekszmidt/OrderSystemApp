@@ -13,7 +13,7 @@ public class LaptopService {
     private static final List<Laptop> LAPTOPS = new ArrayList<>();
     private static final Scanner SCANNER = new Scanner(System.in);
 
-    public Laptop getLaptop() { //todo make a reference client-laptop, if you go to "show laptops" there's should visible data who owns that laptop
+    public Laptop getLaptop() {
         LOGGER.info("Podaj model laptopa: ");
         String model = SCANNER.nextLine();
         while (model.isEmpty()) {

@@ -66,4 +66,15 @@ public class UserService {
         }
         return USERS.get(Integer.parseInt(s));
     }
+
+    public UserService getUserDeviceChoice(){
+        LOGGER.info("Jaki komputer chcesz przypisac do klienta? Laptop(wpisz lap) czy komputer stacjonarny(wpisz ks)");
+        String sc = SCANNER.nextLine();
+        if (sc.equals("lap") || sc.equals("ks")){
+            LOGGER.info("Wybrales: " + sc);
+        }else {
+            LOGGER.info("Podales zla fraze! lap - dla laptopa, ks - dla komputera stacjonarnego");
+        }
+        return null;
+    }
 }

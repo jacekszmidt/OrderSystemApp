@@ -13,7 +13,7 @@ public class ComputerService {
     private static final List<PersonalComputer> PERSONAL_COMPUTERS = new ArrayList<>();
     private static final Scanner SCANNER = new Scanner(System.in);
 
-    private PersonalComputer getPersonalComputer() {
+    public PersonalComputer getPersonalComputer() {
         LOGGER.info("Podaj model procesora: ");
         String cpu = SCANNER.nextLine();
         LOGGER.info("Podaj model plyty glownej: ");

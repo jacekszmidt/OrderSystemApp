@@ -14,20 +14,14 @@ import java.io.IOException;
 import java.util.List;
 
 public class ExcelComputerOutputWriter implements ComputerOutputWriter {
+    private static final String EXCEL_EXTENSION = ".xlsx";
     private final List<String> USER_HEADERS = List.of("Imie", "Nazwisko", "Telefon");
     private final List<String> PERSONAL_COM = List.of("Model", "Numer seryjny", "Mozna kasowac dane?");
     private final List<String> PERSONAL_COMPUTER_HEADERS = List.of("CPU", "Plyta Glowna", "RAM", "Zasilacz", "Dysk", "Mozna kasowac dane?");
-    private final String EXCEL_EXTENSION = ".xlsx";
-
-    public void createWorkbook() {
-        Workbook workbook = new XSSFWorkbook();
-        Sheet sheet = workbook.createSheet("Order Details");
-    }
 
     @Override
-    public void writeOutput(User user, Laptop laptop) {
+    public void writeOutput(User user, UserService userService, Laptop laptop) {
         Workbook workbook = new XSSFWorkbook();
-
         Sheet sheet = workbook.createSheet("Order Details");
 
         Row userHeader = sheet.createRow(0);
@@ -51,7 +45,7 @@ public class ExcelComputerOutputWriter implements ComputerOutputWriter {
             cell.setCellValue(PERSONAL_COM.get(i));
         }
 
-        Row laptopRow = sheet.createRow(1);
+        Row laptopRow = sheet.createRow(4);
         Cell modelCell = laptopRow.createCell(0);
         modelCell.setCellValue(laptop.getModel());
         Cell serialNumberCell = laptopRow.createCell(1);
@@ -72,9 +66,8 @@ public class ExcelComputerOutputWriter implements ComputerOutputWriter {
     }
 
     @Override
-    public void writeOutput(User user, PersonalComputer personalComputer) {
+    public void writeOutput(User user, UserService userService, PersonalComputer personalComputer) {
         Workbook workbook = new XSSFWorkbook();
-
         Sheet sheet = workbook.createSheet("Order Details");
 
         Row userHeader = sheet.createRow(0);

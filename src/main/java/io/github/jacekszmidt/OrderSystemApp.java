@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 public class OrderSystemApp {
     private static final Logger LOGGER = LoggerFactory.getLogger(OrderSystemApp.class);
+    private static final Scanner SCANNER = new Scanner(System.in);
     private static final ComputerService COMPUTER_SERVICE = new ComputerService();
     private static final UserService USER_SERVICE = new UserService();
     private static final LaptopService LAPTOP_SERVICE = new LaptopService();
@@ -42,7 +43,8 @@ public class OrderSystemApp {
                     COMPUTER_SERVICE.showComputers();
                     break;
                 case 7:
-                    COMPUTER_OUTPUT_WRITER.writeOutput(USER_SERVICE.getUser(), LAPTOP_SERVICE.getLaptop());
+                    COMPUTER_OUTPUT_WRITER.writeOutput(USER_SERVICE.getUser(), USER_SERVICE.getUserDeviceChoice(), LAPTOP_SERVICE.getLaptop());
+                    COMPUTER_OUTPUT_WRITER.writeOutput(USER_SERVICE.getUser(), USER_SERVICE.getUserDeviceChoice(), COMPUTER_SERVICE.getPersonalComputer());
 
             }
         }
@@ -54,10 +56,9 @@ public class OrderSystemApp {
     }
 
     private int getUserChoice() {
-        Scanner sc = new Scanner(System.in);
         while (true) {
-            String choice = sc.nextLine();
-            if (!NumberUtils.isParsable(choice) || Integer.parseInt(choice) > 6 || Integer.parseInt(choice) < 0) {
+            String choice = SCANNER.nextLine();
+            if (!NumberUtils.isParsable(choice) || Integer.parseInt(choice) > 7 || Integer.parseInt(choice) < 0) {
                 LOGGER.info("Choose correct number");
                 continue;
             }
