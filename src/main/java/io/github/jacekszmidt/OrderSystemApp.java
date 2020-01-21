@@ -1,8 +1,6 @@
 package io.github.jacekszmidt;
 
-import io.github.jacekszmidt.service.ComputerService;
-import io.github.jacekszmidt.service.LaptopService;
-import io.github.jacekszmidt.service.UserService;
+import io.github.jacekszmidt.service.*;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +12,7 @@ public class OrderSystemApp {
     private static final ComputerService COMPUTER_SERVICE = new ComputerService();
     private static final UserService USER_SERVICE = new UserService();
     private static final LaptopService LAPTOP_SERVICE = new LaptopService();
+    private static final ComputerOutputWriter COMPUTER_OUTPUT_WRITER = new ExcelComputerOutputWriter();
 
     private OrderSystemApp() {
         boolean exit = false;
@@ -42,6 +41,9 @@ public class OrderSystemApp {
                 case 6:
                     COMPUTER_SERVICE.showComputers();
                     break;
+                case 7:
+                    COMPUTER_OUTPUT_WRITER.writeOutput(USER_SERVICE.getUser(), LAPTOP_SERVICE.getLaptop());
+
             }
         }
 
@@ -56,7 +58,7 @@ public class OrderSystemApp {
         while (true) {
             String choice = sc.nextLine();
             if (!NumberUtils.isParsable(choice) || Integer.parseInt(choice) > 6 || Integer.parseInt(choice) < 0) {
-                LOGGER.info("Chose correct number");
+                LOGGER.info("Choose correct number");
                 continue;
             }
             return Integer.parseInt(choice);
@@ -70,7 +72,9 @@ public class OrderSystemApp {
                 "3: add computer" + System.lineSeparator() +
                 "4: show users" + System.lineSeparator() +
                 "5: show laptops" + System.lineSeparator() +
-                "6: show computers";
+                "6: show computers" + System.lineSeparator() +
+                "7: show excel file";
+
         LOGGER.info(mainMenu);
     }
 

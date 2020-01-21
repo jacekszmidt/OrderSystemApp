@@ -13,10 +13,10 @@ public class LaptopService {
     private static final List<Laptop> LAPTOPS = new ArrayList<>();
     private static final Scanner SCANNER = new Scanner(System.in);
 
-    private Laptop getLaptop() {
+    public Laptop getLaptop() { //todo make a reference client-laptop, if you go to "show laptops" there's should visible data who owns that laptop
         LOGGER.info("Podaj model laptopa: ");
         String model = SCANNER.nextLine();
-        while (model.isEmpty()){
+        while (model.isEmpty()) {
             LOGGER.info("Nie podales modelu laptopa, wprowadz model jeszcze raz");
             model = SCANNER.nextLine();
         }

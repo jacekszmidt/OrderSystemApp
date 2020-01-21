@@ -1,6 +1,7 @@
 package io.github.jacekszmidt.service;
 
 import io.github.jacekszmidt.model.User;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,11 +16,10 @@ public class UserService {
 
     public void confirmData() {
         System.out.print("Czy wszystkie dane sie zgadzaja? Y/N? ");
-        Scanner sc = new Scanner(System.in);
-        String checkData = sc.nextLine();
+        String checkData = SCANNER.nextLine();
         if (checkData.equals("Y") || checkData.equals("y")) {
             LOGGER.info("Dane zatwierdzone!");
-        } else if (checkData.equals("N") || checkData.equals("n")){
+        } else if (checkData.equals("N") || checkData.equals("n")) {
             LOGGER.info("Wprowadzone dane nie zostaly zatwierdzone");
         }
     }
@@ -50,5 +50,20 @@ public class UserService {
         for (User user : USERS) {
             LOGGER.info("{}: {}", USERS.indexOf(user), user);
         }
+    }
+
+    public User getUser() {
+        if (USERS.isEmpty()) {
+            LOGGER.info("There are no users");
+            return null;
+        }
+        showUsers();
+        LOGGER.info("Choose user: ");
+        String s = SCANNER.nextLine();
+        while (!NumberUtils.isParsable(s) || Integer.parseInt(s) < 0 || Integer.parseInt(s) > USERS.size()) {
+            LOGGER.info("Invalid user, choose user: ");
+            s = SCANNER.nextLine();
+        }
+        return USERS.get(Integer.parseInt(s));
     }
 }
