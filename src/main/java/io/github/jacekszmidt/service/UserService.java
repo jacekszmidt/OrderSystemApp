@@ -13,6 +13,8 @@ public class UserService {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
     private static final Scanner SCANNER = new Scanner(System.in);
     private static final List<User> USERS = new ArrayList<>();
+    private static final LaptopService LAPTOP_SERVICE = new LaptopService();
+    private static final ComputerService COMPUTER_SERVICE = new ComputerService();
 
     public void confirmData() {
         System.out.print("Czy wszystkie dane sie zgadzaja? Y/N? ");
@@ -54,7 +56,7 @@ public class UserService {
 
     public User getUser() {
         if (USERS.isEmpty()) {
-            LOGGER.info("There are no users");
+            LOGGER.info("There are no users, first assign user!");
             return null;
         }
         showUsers();
@@ -67,14 +69,17 @@ public class UserService {
         return USERS.get(Integer.parseInt(s));
     }
 
-    public UserService getUserDeviceChoice(){
-        LOGGER.info("Jaki komputer chcesz przypisac do klienta? Laptop(wpisz lap) czy komputer stacjonarny(wpisz ks)");
-        String sc = SCANNER.nextLine();
-        if (sc.equals("lap") || sc.equals("ks")){
-            LOGGER.info("Wybrales: " + sc);
-        }else {
-            LOGGER.info("Podales zla fraze! lap - dla laptopa, ks - dla komputera stacjonarnego");
-        }
-        return null;
-    }
+//    public Object getUserDeviceChoice() {
+//        LOGGER.info("Jaki komputer chcesz przypisac do klienta? Laptop(wpisz lap) czy komputer stacjonarny(wpisz ks)");
+//        String sc = SCANNER.nextLine();
+//        LOGGER.info("Wybrales: " + sc);
+//        if (sc.equals("lap")) {
+//            return LAPTOP_SERVICE.addNewLaptop();
+//        } else if (sc.equals("ks")) {
+//            return COMPUTER_SERVICE.addNewComputer();
+//        } else {
+//            LOGGER.info("Podales zla fraze! lap - dla laptopa, ks - dla komputera stacjonarnego");
+//        }
+//        return null;
+//    }
 }

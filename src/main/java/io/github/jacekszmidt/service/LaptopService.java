@@ -27,10 +27,11 @@ public class LaptopService {
         return new Laptop(model, serialNumber, cleanData);
     }
 
-    public void addNewLaptop() {
+    public Object addNewLaptop() {
         Laptop personalComputer = getLaptop();
         LAPTOPS.add(personalComputer);
         LOGGER.info("Laptop was added: {}", personalComputer);
+        return null;
     }
 
     public void showLaptops() {

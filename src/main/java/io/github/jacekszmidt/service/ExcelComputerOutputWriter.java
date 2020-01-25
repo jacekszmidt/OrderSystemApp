@@ -8,19 +8,24 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ExcelComputerOutputWriter implements ComputerOutputWriter {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ExcelComputerOutputWriter.class);
+    private static final List<ExcelComputerOutputWriter> EXCEL_FILES = new ArrayList<>();
     private static final String EXCEL_EXTENSION = ".xlsx";
     private final List<String> USER_HEADERS = List.of("Imie", "Nazwisko", "Telefon");
-    private final List<String> PERSONAL_COM = List.of("Model", "Numer seryjny", "Mozna kasowac dane?");
+    private final List<String> LAPTOP_HEADERS = List.of("Model", "Numer seryjny", "Mozna kasowac dane?");
     private final List<String> PERSONAL_COMPUTER_HEADERS = List.of("CPU", "Plyta Glowna", "RAM", "Zasilacz", "Dysk", "Mozna kasowac dane?");
 
     @Override
-    public void writeOutput(User user, UserService userService, Laptop laptop) {
+    public void writeOutput(User user, Laptop laptop) {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Order Details");
 
@@ -40,9 +45,9 @@ public class ExcelComputerOutputWriter implements ComputerOutputWriter {
 
 
         Row laptopHeader = sheet.createRow(3);
-        for (int i = 0; i < PERSONAL_COM.size(); i++) {
+        for (int i = 0; i < LAPTOP_HEADERS.size(); i++) {
             Cell cell = laptopHeader.createCell(i);
-            cell.setCellValue(PERSONAL_COM.get(i));
+            cell.setCellValue(LAPTOP_HEADERS.get(i));
         }
 
         Row laptopRow = sheet.createRow(4);
@@ -66,7 +71,7 @@ public class ExcelComputerOutputWriter implements ComputerOutputWriter {
     }
 
     @Override
-    public void writeOutput(User user, UserService userService, PersonalComputer personalComputer) {
+    public void writeOutput(User user, PersonalComputer personalComputer) {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Order Details");
 
@@ -91,7 +96,7 @@ public class ExcelComputerOutputWriter implements ComputerOutputWriter {
             cell.setCellValue(PERSONAL_COMPUTER_HEADERS.get(i));
         }
 
-        Row personalComputerRow = sheet.createRow(1);
+        Row personalComputerRow = sheet.createRow(4);
         Cell cpuCell = personalComputerRow.createCell(0);
         cpuCell.setCellValue(personalComputer.getCpu());
         Cell motherBoardCell = personalComputerRow.createCell(1);
@@ -119,6 +124,6 @@ public class ExcelComputerOutputWriter implements ComputerOutputWriter {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 }
+

@@ -29,10 +29,11 @@ public class ComputerService {
         return new PersonalComputer(cpu, motherBoard, memoryRam, psu, diSCANNER, cleanData);
     }
 
-    public void addNewComputer() {
+    public Object addNewComputer() {
         PersonalComputer personalComputer = getPersonalComputer();
         PERSONAL_COMPUTERS.add(personalComputer);
         LOGGER.info("Personal computer was added: {}", personalComputer);
+        return null;
     }
 
     public void showComputers() {
