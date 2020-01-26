@@ -13,8 +13,6 @@ public class UserService {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
     private static final Scanner SCANNER = new Scanner(System.in);
     private static final List<User> USERS = new ArrayList<>();
-    private static final LaptopService LAPTOP_SERVICE = new LaptopService();
-    private static final ComputerService COMPUTER_SERVICE = new ComputerService();
 
     public void confirmData() {
         System.out.print("Czy wszystkie dane sie zgadzaja? Y/N? ");
@@ -57,6 +55,8 @@ public class UserService {
     public User getUser() {
         if (USERS.isEmpty()) {
             LOGGER.info("There are no users, first assign user!");
+            LOGGER.info("Redirecting to add user...");
+            addUser();
             return null;
         }
         showUsers();

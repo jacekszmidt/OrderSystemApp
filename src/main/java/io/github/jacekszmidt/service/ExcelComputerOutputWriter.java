@@ -8,21 +8,18 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ExcelComputerOutputWriter implements ComputerOutputWriter {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ExcelComputerOutputWriter.class);
-    private static final List<ExcelComputerOutputWriter> EXCEL_FILES = new ArrayList<>();
     private static final String EXCEL_EXTENSION = ".xlsx";
-    private final List<String> USER_HEADERS = List.of("Imie", "Nazwisko", "Telefon");
-    private final List<String> LAPTOP_HEADERS = List.of("Model", "Numer seryjny", "Mozna kasowac dane?");
-    private final List<String> PERSONAL_COMPUTER_HEADERS = List.of("CPU", "Plyta Glowna", "RAM", "Zasilacz", "Dysk", "Mozna kasowac dane?");
+    private static final String LAP_ENDING = "LAP#";
+    private static final String PC_ENDING = "PC#";
+    private final List<String> userHeaders = List.of("Imie", "Nazwisko", "Telefon");
+    private final List<String> laptopHeaders = List.of("Model", "Numer seryjny", "Inne", "Opis usterki", "Mozna kasowac dane?");
+    private final List<String> personalComputerHeaders = List.of("CPU", "Plyta Glowna", "RAM", "Zasilacz", "Dysk", "Inne", "Opis usterki", "Mozna kasowac dane?");
 
     @Override
     public void writeOutput(User user, Laptop laptop) {
@@ -30,9 +27,9 @@ public class ExcelComputerOutputWriter implements ComputerOutputWriter {
         Sheet sheet = workbook.createSheet("Order Details");
 
         Row userHeader = sheet.createRow(0);
-        for (int i = 0; i < USER_HEADERS.size(); i++) {
+        for (int i = 0; i < userHeaders.size(); i++) {
             Cell cell = userHeader.createCell(i);
-            cell.setCellValue(USER_HEADERS.get(i));
+            cell.setCellValue(userHeaders.get(i));
         }
 
         Row userRow = sheet.createRow(1);
@@ -45,9 +42,9 @@ public class ExcelComputerOutputWriter implements ComputerOutputWriter {
 
 
         Row laptopHeader = sheet.createRow(3);
-        for (int i = 0; i < LAPTOP_HEADERS.size(); i++) {
+        for (int i = 0; i < laptopHeaders.size(); i++) {
             Cell cell = laptopHeader.createCell(i);
-            cell.setCellValue(LAPTOP_HEADERS.get(i));
+            cell.setCellValue(laptopHeaders.get(i));
         }
 
         Row laptopRow = sheet.createRow(4);
@@ -55,15 +52,21 @@ public class ExcelComputerOutputWriter implements ComputerOutputWriter {
         modelCell.setCellValue(laptop.getModel());
         Cell serialNumberCell = laptopRow.createCell(1);
         serialNumberCell.setCellValue(laptop.getSerialNumber());
-        Cell cleanDataCell = laptopRow.createCell(2);
+        Cell otherInfoCell = laptopRow.createCell(2);
+        otherInfoCell.setCellValue(laptop.getOtherInfo());
+        Cell problemDescriptionCell = laptopRow.createCell(3);
+        problemDescriptionCell.setCellValue(laptop.getProblemDescription());
+        Cell cleanDataCell = laptopRow.createCell(4);
         cleanDataCell.setCellValue(laptop.getCleanData());
 
         sheet.autoSizeColumn(0);
         sheet.autoSizeColumn(1);
         sheet.autoSizeColumn(2);
+        sheet.autoSizeColumn(3);
+        sheet.autoSizeColumn(4);
 
         try {
-            FileOutputStream file = new FileOutputStream((System.currentTimeMillis() / 1000) + EXCEL_EXTENSION);
+            FileOutputStream file = new FileOutputStream(LAP_ENDING + user.getLastName() + "_" + (System.currentTimeMillis() / 1000) + EXCEL_EXTENSION);
             workbook.write(file);
         } catch (IOException e) {
             e.printStackTrace();
@@ -76,9 +79,9 @@ public class ExcelComputerOutputWriter implements ComputerOutputWriter {
         Sheet sheet = workbook.createSheet("Order Details");
 
         Row userHeader = sheet.createRow(0);
-        for (int i = 0; i < USER_HEADERS.size(); i++) {
+        for (int i = 0; i < userHeaders.size(); i++) {
             Cell cell = userHeader.createCell(i);
-            cell.setCellValue(USER_HEADERS.get(i));
+            cell.setCellValue(userHeaders.get(i));
         }
 
         Row userRow = sheet.createRow(1);
@@ -91,9 +94,9 @@ public class ExcelComputerOutputWriter implements ComputerOutputWriter {
 
 
         Row personalComputerHeader = sheet.createRow(3);
-        for (int i = 0; i < PERSONAL_COMPUTER_HEADERS.size(); i++) {
+        for (int i = 0; i < personalComputerHeaders.size(); i++) {
             Cell cell = personalComputerHeader.createCell(i);
-            cell.setCellValue(PERSONAL_COMPUTER_HEADERS.get(i));
+            cell.setCellValue(personalComputerHeaders.get(i));
         }
 
         Row personalComputerRow = sheet.createRow(4);
@@ -107,7 +110,11 @@ public class ExcelComputerOutputWriter implements ComputerOutputWriter {
         psuCell.setCellValue(personalComputer.getPsu());
         Cell discCell = personalComputerRow.createCell(4);
         discCell.setCellValue(personalComputer.getDisc());
-        Cell cleanDataCell = personalComputerRow.createCell(5);
+        Cell otherInfoCell = personalComputerRow.createCell(5);
+        otherInfoCell.setCellValue(personalComputer.getOtherInfo());
+        Cell problemDescriptionCell = personalComputerRow.createCell(6);
+        problemDescriptionCell.setCellValue(personalComputer.getProblemDescription());
+        Cell cleanDataCell = personalComputerRow.createCell(7);
         cleanDataCell.setCellValue(personalComputer.getCleanData());
 
 
@@ -117,9 +124,11 @@ public class ExcelComputerOutputWriter implements ComputerOutputWriter {
         sheet.autoSizeColumn(3);
         sheet.autoSizeColumn(4);
         sheet.autoSizeColumn(5);
+        sheet.autoSizeColumn(6);
+        sheet.autoSizeColumn(7);
 
         try {
-            FileOutputStream file = new FileOutputStream((System.currentTimeMillis() / 1000) + EXCEL_EXTENSION);
+            FileOutputStream file = new FileOutputStream(PC_ENDING + user.getLastName() + "_" + (System.currentTimeMillis() / 1000) + EXCEL_EXTENSION);
             workbook.write(file);
         } catch (IOException e) {
             e.printStackTrace();

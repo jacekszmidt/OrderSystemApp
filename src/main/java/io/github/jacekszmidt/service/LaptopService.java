@@ -22,14 +22,18 @@ public class LaptopService {
         }
         LOGGER.info("Podaj numer seryjny laptopa: ");
         String serialNumber = SCANNER.nextLine();
+        LOGGER.info("Inne?");
+        String otherInfo = SCANNER.nextLine();
+        LOGGER.info("Opis usterki");
+        String problemDescription = SCANNER.nextLine();
         LOGGER.info("Czy mozna usuwac dane? ");
         String cleanData = SCANNER.nextLine();
-        return new Laptop(model, serialNumber, cleanData);
+        return new Laptop(model, serialNumber, otherInfo, problemDescription, cleanData);
     }
 
     public Object addNewLaptop() {
         Laptop personalComputer = getLaptop();
-        LAPTOPS.add(personalComputer);
+        //  LAPTOPS.add(personalComputer);
         LOGGER.info("Laptop was added: {}", personalComputer);
         return null;
     }

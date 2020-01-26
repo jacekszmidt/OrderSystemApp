@@ -27,25 +27,27 @@ public class OrderSystemApp {
                 case 1:
                     USER_SERVICE.addUser();
                     break;
-                case 2:
-                    LAPTOP_SERVICE.addNewLaptop();
-                    break;
-                case 3:
-                    COMPUTER_SERVICE.addNewComputer();
-                    break;
+//                case 2:
+//                    LAPTOP_SERVICE.addNewLaptop();
+//                    break;
+//                case 3:
+//                    COMPUTER_SERVICE.addNewComputer();
+//                    break;
                 case 4:
                     USER_SERVICE.showUsers();
                     break;
-                case 5:
-                    LAPTOP_SERVICE.showLaptops();
-                    break;
-                case 6:
-                    COMPUTER_SERVICE.showComputers();
-                    break;
+//                case 5:
+//                    LAPTOP_SERVICE.showLaptops();
+//                    break;
+//                case 6:
+//                    COMPUTER_SERVICE.showComputers();
+//                    break;
                 case 7:
                     COMPUTER_OUTPUT_WRITER.writeOutput(USER_SERVICE.getUser(), LAPTOP_SERVICE.getLaptop());
+                    break;
                 case 8:
                     COMPUTER_OUTPUT_WRITER.writeOutput(USER_SERVICE.getUser(), COMPUTER_SERVICE.getPersonalComputer());
+                    break;
 
             }
         }
