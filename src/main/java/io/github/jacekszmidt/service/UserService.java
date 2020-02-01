@@ -43,10 +43,10 @@ public class UserService {
 
     public void showUsers() {
         if (USERS.isEmpty()) {
-            LOGGER.info("There are no users");
+            LOGGER.info("Nie ma dodanych uzytkownikow!");
             return;
         }
-        LOGGER.info("List of all users:");
+        LOGGER.info("Lista uzytkownikow:");
         for (User user : USERS) {
             LOGGER.info("{}: {}", USERS.indexOf(user), user);
         }
@@ -54,16 +54,16 @@ public class UserService {
 
     public User getUser() {
         if (USERS.isEmpty()) {
-            LOGGER.info("There are no users, first assign user!");
-            LOGGER.info("Redirecting to add user...");
+            LOGGER.info("Nie ma uzytkownikow, najpierw ich dodaj!");
+            LOGGER.info("Przekierowywanie...");
             addUser();
             return null;
         }
         showUsers();
-        LOGGER.info("Choose user: ");
+        LOGGER.info("Wybierz uzytkownika: ");
         String s = SCANNER.nextLine();
         while (!NumberUtils.isParsable(s) || Integer.parseInt(s) < 0 || Integer.parseInt(s) > USERS.size()) {
-            LOGGER.info("Invalid user, choose user: ");
+            LOGGER.info("Zly uzytkownik, sprobuj jeszcze raz!");
             s = SCANNER.nextLine();
         }
         return USERS.get(Integer.parseInt(s));
