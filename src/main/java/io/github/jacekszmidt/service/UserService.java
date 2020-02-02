@@ -57,7 +57,7 @@ public class UserService {
             LOGGER.info("Nie ma uzytkownikow, najpierw ich dodaj!");
             LOGGER.info("Przekierowywanie...");
             addUser();
-            return null;
+
         }
         showUsers();
         LOGGER.info("Wybierz uzytkownika: ");
@@ -68,18 +68,4 @@ public class UserService {
         }
         return USERS.get(Integer.parseInt(s));
     }
-
-//    public Object getUserDeviceChoice() {
-//        LOGGER.info("Jaki komputer chcesz przypisac do klienta? Laptop(wpisz lap) czy komputer stacjonarny(wpisz ks)");
-//        String sc = SCANNER.nextLine();
-//        LOGGER.info("Wybrales: " + sc);
-//        if (sc.equals("lap")) {
-//            return LAPTOP_SERVICE.addNewLaptop();
-//        } else if (sc.equals("ks")) {
-//            return COMPUTER_SERVICE.addNewComputer();
-//        } else {
-//            LOGGER.info("Podales zla fraze! lap - dla laptopa, ks - dla komputera stacjonarnego");
-//        }
-//        return null;
-//    }
 }

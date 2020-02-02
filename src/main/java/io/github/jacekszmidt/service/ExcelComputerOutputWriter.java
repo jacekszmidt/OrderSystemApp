@@ -9,56 +9,66 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class ExcelComputerOutputWriter implements ComputerOutputWriter {
     private static final String EXCEL_EXTENSION = ".xlsx";
     private static final String LAP_ENDING = "LAP#";
     private static final String PC_ENDING = "PC#";
-    private final List<String> userHeaders = List.of("Imie", "Nazwisko", "Telefon", "Numer zlecenia");
+    private final List<String> userHeaders = List.of("Imie", "Nazwisko", "Telefon", "Numer zlecenia", "Data przyjecia");
     private final List<String> laptopHeaders = List.of("Model", "Numer seryjny", "Inne", "Opis usterki", "Kasowac dane?");
     private final List<String> personalComputerHeaders = List.of("CPU", "Plyta Glowna", "RAM", "Zasilacz", "Dysk", "Inne", "Opis usterki", "Kasowac dane?");
 
+    DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+    Date dateobj = new Date();
+    String fontTnr = "Times New Roman";
 
     private CellStyle userRowStyle(Workbook workbook) {
         CellStyle userRowStyle = workbook.createCellStyle();
         XSSFFont font = ((XSSFWorkbook) workbook).createFont();
-        font.setFontName("Times New Roman");
+        font.setFontName(fontTnr);
         font.setFontHeightInPoints((short) 9);
         font.setBold(false);
         userRowStyle.setAlignment(HorizontalAlignment.CENTER);
         userRowStyle.setFont(font);
         userRowStyle.setBorderTop(BorderStyle.THIN);
+        userRowStyle.setBorderBottom(BorderStyle.THIN);
+        userRowStyle.setBorderRight(BorderStyle.THIN);
+        userRowStyle.setBorderLeft(BorderStyle.THIN);
         return userRowStyle;
     }
 
     private CellStyle userHeaderStyle(Workbook workbook) {
         CellStyle userHeaderStyle = workbook.createCellStyle();
-        userHeaderStyle.setFillForegroundColor(IndexedColors.LIGHT_BLUE.getIndex());
-        userHeaderStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         XSSFFont font = ((XSSFWorkbook) workbook).createFont();
-        font.setFontName("Times New Roman");
+        font.setFontName(fontTnr);
         font.setFontHeightInPoints((short) 10);
-        font.setBold(false);
+        font.setBold(true);
         userHeaderStyle.setAlignment(HorizontalAlignment.CENTER);
         userHeaderStyle.setFont(font);
         userHeaderStyle.setBorderRight(BorderStyle.THIN);
         userHeaderStyle.setBorderTop(BorderStyle.THIN);
+        userHeaderStyle.setBorderBottom(BorderStyle.THIN);
+        userHeaderStyle.setBorderLeft(BorderStyle.THIN);
         return userHeaderStyle;
     }
 
     private CellStyle dataAgreementStyle(Workbook workbook) {
         CellStyle dataAgreementStyle = workbook.createCellStyle();
         XSSFFont font = ((XSSFWorkbook) workbook).createFont();
-        font.setFontName("Times New Roman");
-        font.setFontHeightInPoints((short) 5);
+        font.setFontName(fontTnr);
+        font.setFontHeightInPoints((short) 6);
         font.setBold(false);
-//        dataAgreementStyle.setWrapText(true);
+        dataAgreementStyle.setWrapText(true);
         dataAgreementStyle.setAlignment(HorizontalAlignment.LEFT);
         dataAgreementStyle.setFont(font);
         dataAgreementStyle.setBorderLeft(BorderStyle.THIN);
         dataAgreementStyle.setBorderTop(BorderStyle.THIN);
         dataAgreementStyle.setBorderBottom(BorderStyle.THIN);
+        dataAgreementStyle.setBorderRight(BorderStyle.THIN);
         return dataAgreementStyle;
     }
 
@@ -69,7 +79,7 @@ public class ExcelComputerOutputWriter implements ComputerOutputWriter {
 
         long orderNumber = (System.currentTimeMillis() / 1000);
 
-        String agreement = "Wyrazam zgode na przetwarzanie moich danych osobowych\n zgodnie z ustawa o ochronie danych osobowych\n w zwiazku z realizacja zlecenia. Podanie danych\n jest dobrowolne, ale niezbedne do przetworzenia zlecenia.\n Zostalem/am poinformowany/a, ze przysluguje mi prawo\n dostepu do swoich danych, mozliwosci ich\n poprawiania lub zadania zaprzestania ich przetwarzania.";
+        String agreement = "Wyrazam zgode na przetwarzanie moich danych osobowych zgodnie z ustawa o ochronie danych osobowych w zwiazku z realizacja zlecenia. Podanie danych jest dobrowolne, ale niezbedne do przetworzenia zlecenia. Zostalem/am poinformowany/a, ze przysluguje mi prawo dostepu do swoich danych, mozliwosci ich poprawiania lub zadania zaprzestania ich przetwarzania.";
 
         Row userHeader = sheet.createRow(0);
         for (int i = 0; i < userHeaders.size(); i++) {
@@ -92,6 +102,10 @@ public class ExcelComputerOutputWriter implements ComputerOutputWriter {
         Cell orderNumberCell = userRow.createCell(3);
         orderNumberCell.setCellValue(orderNumber);
         orderNumberCell.setCellStyle(userRowStyle(workbook));
+        Cell dataFormatCell = userRow.createCell(4);
+        dataFormatCell.setCellValue(df.format(dateobj));
+        dataFormatCell.setCellStyle(userRowStyle(workbook));
+
 
         Row laptopHeader = sheet.createRow(2);
         for (int i = 0; i < laptopHeaders.size(); i++) {
@@ -123,7 +137,7 @@ public class ExcelComputerOutputWriter implements ComputerOutputWriter {
         dataAgreementCell.setCellStyle(dataAgreementStyle(workbook));
 
 
-        sheet.autoSizeColumn(0);
+        sheet.setColumnWidth(0, 4000);
         sheet.autoSizeColumn(1);
         sheet.autoSizeColumn(2);
         sheet.autoSizeColumn(3);
@@ -141,9 +155,6 @@ public class ExcelComputerOutputWriter implements ComputerOutputWriter {
     public void writeOutput(User user, PersonalComputer personalComputer) {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Order Details");
-
-        String agreement = "Wyrazam zgode na przetwarzanie moich danych osobowych\n zgodnie z ustawa o ochronie danych osobowych w zwiazku\n z realizacja zlecenia. Podanie danych jest dobrowolne,\n ale niezbedne do przetworzenia zlecenia.\n Zostalem/am poinformowany/a, ze przysluguje mi\n prawo dostepu do swoich danych, mozliwosci ich poprawiania lub zadania zaprzestania ich przetwarzania.";
-
 
         Row userHeader = sheet.createRow(0);
         for (int i = 0; i < userHeaders.size(); i++) {
