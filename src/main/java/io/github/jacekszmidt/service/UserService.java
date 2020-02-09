@@ -27,7 +27,7 @@ public class UserService {
     public void addUser() {
         User user = addNewUser();
         USERS.add(user);
-        LOGGER.info("New user was added: {}", user);
+        LOGGER.info("Dodano nowego uzytkownika: {}", user);
         confirmData();
     }
 

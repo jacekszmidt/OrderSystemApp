@@ -8,8 +8,6 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.RegionUtil;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -23,6 +21,7 @@ public class ExcelComputerOutputWriter implements ComputerOutputWriter {
     private static final String LAP_ENDING = "LAP#";
     private static final String PC_ENDING = "PC#";
     private final List<String> userHeaders = List.of("Imie", "Nazwisko", "Telefon", "Numer zlecenia", "Data przyjecia");
+    private final List<String> confirmationHeaders = List.of("Sprzet", "Usterka", "Telefon", "Numer zlecenia", "Data przyjecia");
     private final List<String> laptopHeaders = List.of("Model", "Numer seryjny", "Inne", "Opis usterki", "Kasowac dane?");
     private final List<String> personalComputerHeaders = List.of("CPU", "MB", "RAM", "PSU", "Dysk", "Inne", "Opis usterki", "Kasowac dane?");
     String agreement = "Wyrazam zgode na przetwarzanie moich danych osobowych zgodnie z ustawa o ochronie danych osobowych w zwiazku z realizacja zlecenia. Podanie danych jest dobrowolne, ale niezbedne do przetworzenia zlecenia. Zostalem/am poinformowany/a, ze przysluguje mi prawo dostepu do swoich danych, mozliwosci ich poprawiania lub zadania zaprzestania ich przetwarzania.";
@@ -32,6 +31,110 @@ public class ExcelComputerOutputWriter implements ComputerOutputWriter {
     String fontTnr = "Times New Roman";
     String clientSign = "Podpis klienta";
     String orderClientSign = "Potwierdzam odbior sprzetu\n oraz nie mam zadnych zastrzezen\n co do jego stanu - data i podpis:";
+
+    @Override
+    public void writeOutput(User user, Laptop laptop) {
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Order Details");
+
+        userHeaders(workbook, sheet);
+        userRow(user, workbook, sheet);
+        laptopHeader(workbook, sheet);
+        laptopRow(laptop, workbook, sheet);
+        dataAgreementRow(workbook, sheet);
+        clientAcceptSignRow(workbook, sheet);
+
+
+        sheet.setColumnWidth(0, 2000);
+        sheet.autoSizeColumn(1);
+        sheet.autoSizeColumn(2);
+        sheet.autoSizeColumn(3);
+        sheet.autoSizeColumn(4);
+
+        try {
+            FileOutputStream file = new FileOutputStream(LAP_ENDING + user.getLastName() + "_" + orderNumber + EXCEL_EXTENSION);
+            workbook.write(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void writeOutput(User user, PersonalComputer personalComputer) {
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Order Details");
+
+        userHeaders(workbook, sheet);
+        userRow(user, workbook, sheet);
+        personalComputerHeader(workbook, sheet);
+        personalComputerRow(workbook, sheet, personalComputer);
+        dataAgreementRow(workbook, sheet);
+        clientAcceptSignRow(workbook, sheet);
+
+//        Row dataAgreementRow = sheet.createRow(sheet.getLastRowNum() + 1);
+//        CellRangeAddress range = (new CellRangeAddress(4, 4, 0, 4));
+//        sheet.addMergedRegion(range);
+//        RegionUtil.setBorderBottom(BorderStyle.THIN, range, sheet);
+//        CellRangeAddress range1 = (new CellRangeAddress(4, 4, 5, 7));
+//        sheet.addMergedRegion(range1);
+//        RegionUtil.setBorderBottom(BorderStyle.THIN, range1, sheet);
+//        RegionUtil.setBorderRight(BorderStyle.THIN, range1, sheet);
+//        dataAgreementRow.setHeightInPoints(30);
+//        Cell dataAgreementCell = dataAgreementRow.createCell(0);
+//        dataAgreementCell.setCellValue(agreement);
+//        dataAgreementCell.setCellStyle(dataAgreementStyle(workbook));
+//        Cell signCell = dataAgreementRow.createCell(5);
+//        signCell.setCellValue(clientSign);
+//        signCell.setCellStyle(userRowStyle(workbook));
+//
+//        Row clientAcceptSignRow = sheet.createRow(sheet.getLastRowNum() + 1);
+//        CellRangeAddress range2 = (new CellRangeAddress(5, 5, 0, 5));
+//        sheet.addMergedRegion(range2);
+//        RegionUtil.setBorderBottom(BorderStyle.THIN, range2, sheet);
+//        RegionUtil.setBorderRight(BorderStyle.THIN, range2, sheet);
+//        RegionUtil.setBorderLeft(BorderStyle.THIN, range2, sheet);
+//        clientAcceptSignRow.setHeightInPoints(35);
+//        Cell clientAcceptCell = clientAcceptSignRow.createCell(0);
+//        clientAcceptCell.setCellValue(orderClientSign);
+//        clientAcceptCell.setCellStyle(orderClientSignStyle(workbook));
+
+        Row confirmationHeader = sheet.createRow(sheet.getLastRowNum() + 3);
+        for (int i = 0; i < confirmationHeaders.size(); i++) {
+            Cell cell = confirmationHeader.createCell(i);
+            cell.setCellValue(confirmationHeaders.get(i));
+            cell.setCellStyle(userHeaderStyle(workbook));
+        }
+
+//        Row personalComputerConfirmation = sheet.createRow(sheet.getLastRowNum() + 1);
+//            CellRangeAddress range3 = (new CellRangeAddress(8, 8, 0, 2));
+//            sheet.addMergedRegion(range3);
+//            RegionUtil.setBorderBottom(BorderStyle.THIN, range3, sheet);
+//            RegionUtil.setBorderRight(BorderStyle.THIN, range3, sheet);
+//            personalComputerConfirmation.setHeightInPoints(30);
+//            Cell cpuConfirmationCell = personalComputerConfirmation.createCell(0);
+//            cpuConfirmationCell.setCellValue(personalComputer.getCpu());
+//            cpuConfirmationCell.setCellValue(personalComputer.getMotherBoard());
+//            cpuConfirmationCell.setCellValue(personalComputer.getMemoryRam());
+//            cpuConfirmationCell.setCellValue(personalComputer.getPsu());
+//            cpuConfirmationCell.setCellValue(personalComputer.getDisc());
+//            cpuConfirmationCell.setCellStyle(confirmationRowStyle(workbook));
+
+        sheet.setColumnWidth(0, 2000);
+        sheet.autoSizeColumn(1);
+        sheet.autoSizeColumn(2);
+        sheet.autoSizeColumn(3);
+        sheet.autoSizeColumn(4);
+        sheet.autoSizeColumn(5);
+        sheet.autoSizeColumn(6);
+        sheet.autoSizeColumn(7);
+
+        try {
+            FileOutputStream file = new FileOutputStream(PC_ENDING + user.getLastName() + "_" + orderNumber + EXCEL_EXTENSION);
+            workbook.write(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     private CellStyle userRowStyle(Workbook workbook) {
         CellStyle userRowStyle = workbook.createCellStyle();
@@ -46,6 +149,22 @@ public class ExcelComputerOutputWriter implements ComputerOutputWriter {
         userRowStyle.setBorderRight(BorderStyle.THIN);
         userRowStyle.setBorderLeft(BorderStyle.THIN);
         return userRowStyle;
+    }
+
+    private CellStyle confirmationRowStyle(Workbook workbook) {
+        CellStyle confirmationRowStyle = workbook.createCellStyle();
+        XSSFFont font = ((XSSFWorkbook) workbook).createFont();
+        font.setFontName(fontTnr);
+        font.setFontHeightInPoints((short) 8);
+        font.setBold(false);
+        confirmationRowStyle.setWrapText(true);
+        confirmationRowStyle.setAlignment(HorizontalAlignment.LEFT);
+        confirmationRowStyle.setFont(font);
+        confirmationRowStyle.setBorderTop(BorderStyle.THIN);
+        confirmationRowStyle.setBorderBottom(BorderStyle.THIN);
+        confirmationRowStyle.setBorderRight(BorderStyle.THIN);
+        confirmationRowStyle.setBorderLeft(BorderStyle.THIN);
+        return confirmationRowStyle;
     }
 
     private CellStyle userHeaderStyle(Workbook workbook) {
@@ -92,18 +211,16 @@ public class ExcelComputerOutputWriter implements ComputerOutputWriter {
         return orderClientStyle;
     }
 
-    @Override
-    public void writeOutput(User user, Laptop laptop) {
-        Workbook workbook = new XSSFWorkbook();
-        Sheet sheet = workbook.createSheet("Order Details");
-
+    private void userHeaders(Workbook workbook, Sheet sheet){
         Row userHeader = sheet.createRow(0);
         for (int i = 0; i < userHeaders.size(); i++) {
             Cell cell = userHeader.createCell(i);
             cell.setCellValue(userHeaders.get(i));
             cell.setCellStyle(userHeaderStyle(workbook));
         }
+    }
 
+    private void userRow(User user, Workbook workbook, Sheet sheet){
         Row userRow = sheet.createRow(1);
         Cell nameCell = userRow.createCell(0);
         nameCell.setCellValue(user.getName());
@@ -121,15 +238,27 @@ public class ExcelComputerOutputWriter implements ComputerOutputWriter {
         Cell dataFormatCell = userRow.createCell(4);
         dataFormatCell.setCellValue(df.format(dateobj));
         dataFormatCell.setCellStyle(userRowStyle(workbook));
+    }
 
-
+    private void laptopHeader(Workbook workbook, Sheet sheet){
         Row laptopHeader = sheet.createRow(2);
         for (int i = 0; i < laptopHeaders.size(); i++) {
             Cell cell = laptopHeader.createCell(i);
             cell.setCellValue(laptopHeaders.get(i));
             cell.setCellStyle(userHeaderStyle(workbook));
         }
+    }
 
+    private void personalComputerHeader(Workbook workbook, Sheet sheet){
+        Row personalComputerHeader = sheet.createRow(2);
+        for (int i = 0; i < personalComputerHeaders.size(); i++) {
+            Cell cell = personalComputerHeader.createCell(i);
+            cell.setCellValue(personalComputerHeaders.get(i));
+            cell.setCellStyle(userHeaderStyle(workbook));
+        }
+    }
+
+    private void laptopRow(Laptop laptop, Workbook workbook, Sheet sheet){
         Row laptopRow = sheet.createRow(3);
         Cell modelCell = laptopRow.createCell(0);
         modelCell.setCellValue(laptop.getModel());
@@ -146,14 +275,16 @@ public class ExcelComputerOutputWriter implements ComputerOutputWriter {
         Cell cleanDataCell = laptopRow.createCell(4);
         cleanDataCell.setCellValue(laptop.getCleanData());
         cleanDataCell.setCellStyle(userRowStyle(workbook));
+    }
 
+    private void dataAgreementRow(Workbook workbook, Sheet sheet){
         Row dataAgreementRow = sheet.createRow(sheet.getLastRowNum() + 1);
-        CellRangeAddress range = (new CellRangeAddress(4,4,0,3));
+        CellRangeAddress range = (new CellRangeAddress(4, 4, 0, 3));
         sheet.addMergedRegion(range);
         RegionUtil.setBorderBottom(BorderStyle.THIN, range, sheet);
         RegionUtil.setBorderLeft(BorderStyle.THIN, range, sheet);
         RegionUtil.setBorderRight(BorderStyle.THIN, range, sheet);
-        CellRangeAddress range1 = (new CellRangeAddress(4,4,4,6));
+        CellRangeAddress range1 = (new CellRangeAddress(4, 4, 4, 6));
         sheet.addMergedRegion(range1);
         RegionUtil.setBorderBottom(BorderStyle.THIN, range1, sheet);
         RegionUtil.setBorderRight(BorderStyle.THIN, range1, sheet);
@@ -165,9 +296,11 @@ public class ExcelComputerOutputWriter implements ComputerOutputWriter {
         Cell signCell = dataAgreementRow.createCell(4);
         signCell.setCellValue(clientSign);
         signCell.setCellStyle(userRowStyle(workbook));
+    }
 
+    private void clientAcceptSignRow(Workbook workbook, Sheet sheet){
         Row clientAcceptSignRow = sheet.createRow(sheet.getLastRowNum() + 1);
-        CellRangeAddress range2 = (new CellRangeAddress(5,5,0,4));
+        CellRangeAddress range2 = (new CellRangeAddress(5, 5, 0, 4));
         sheet.addMergedRegion(range2);
         RegionUtil.setBorderBottom(BorderStyle.THIN, range2, sheet);
         RegionUtil.setBorderRight(BorderStyle.THIN, range2, sheet);
@@ -175,59 +308,9 @@ public class ExcelComputerOutputWriter implements ComputerOutputWriter {
         Cell clientAcceptCell = clientAcceptSignRow.createCell(0);
         clientAcceptCell.setCellValue(orderClientSign);
         clientAcceptCell.setCellStyle(orderClientSignStyle(workbook));
-
-
-        sheet.setColumnWidth(0, 2000);
-        sheet.autoSizeColumn(1);
-        sheet.autoSizeColumn(2);
-        sheet.autoSizeColumn(3);
-        sheet.autoSizeColumn(4);
-
-        try {
-            FileOutputStream file = new FileOutputStream(LAP_ENDING + user.getLastName() + "_" + orderNumber + EXCEL_EXTENSION);
-            workbook.write(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
-    @Override
-    public void writeOutput(User user, PersonalComputer personalComputer) {
-        Workbook workbook = new XSSFWorkbook();
-        Sheet sheet = workbook.createSheet("Order Details");
-
-        Row userHeader = sheet.createRow(0);
-        for (int i = 0; i < userHeaders.size(); i++) {
-            Cell cell = userHeader.createCell(i);
-            cell.setCellValue(userHeaders.get(i));
-            cell.setCellStyle(userHeaderStyle(workbook));
-        }
-
-        Row userRow = sheet.createRow(1);
-        Cell nameCell = userRow.createCell(0);
-        nameCell.setCellValue(user.getName());
-        nameCell.setCellStyle(userRowStyle(workbook));
-        Cell lastNameCell = userRow.createCell(1);
-        lastNameCell.setCellValue(user.getLastName());
-        lastNameCell.setCellStyle(userRowStyle(workbook));
-        Cell phoneNumberCell = userRow.createCell(2);
-        phoneNumberCell.setCellValue(user.getPhoneNumber());
-        phoneNumberCell.setCellStyle(userRowStyle(workbook));
-        Cell orderNumberCell = userRow.createCell(3);
-        orderNumberCell.setCellValue(orderNumber);
-        orderNumberCell.setCellStyle(userRowStyle(workbook));
-        Cell dataFormatCell = userRow.createCell(4);
-        dataFormatCell.setCellValue(df.format(dateobj));
-        dataFormatCell.setCellStyle(userRowStyle(workbook));
-
-
-        Row personalComputerHeader = sheet.createRow(2);
-        for (int i = 0; i < personalComputerHeaders.size(); i++) {
-            Cell cell = personalComputerHeader.createCell(i);
-            cell.setCellValue(personalComputerHeaders.get(i));
-            cell.setCellStyle(userHeaderStyle(workbook));
-        }
-
+    private void personalComputerRow(Workbook workbook, Sheet sheet, PersonalComputer personalComputer){
         Row personalComputerRow = sheet.createRow(3);
         Cell cpuCell = personalComputerRow.createCell(0);
         cpuCell.setCellValue(personalComputer.getCpu());
@@ -253,49 +336,6 @@ public class ExcelComputerOutputWriter implements ComputerOutputWriter {
         Cell cleanDataCell = personalComputerRow.createCell(7);
         cleanDataCell.setCellValue(personalComputer.getCleanData());
         cleanDataCell.setCellStyle(userRowStyle(workbook));
-
-        Row dataAgreementRow = sheet.createRow(sheet.getLastRowNum() + 1);
-        CellRangeAddress range = (new CellRangeAddress(4,4,0,4));
-        sheet.addMergedRegion(range);
-        RegionUtil.setBorderBottom(BorderStyle.THIN, range, sheet);
-        CellRangeAddress range1 = (new CellRangeAddress(4,4,5,7));
-        sheet.addMergedRegion(range1);
-        RegionUtil.setBorderBottom(BorderStyle.THIN, range1, sheet);
-        RegionUtil.setBorderRight(BorderStyle.THIN, range1, sheet);
-        dataAgreementRow.setHeightInPoints(30);
-        Cell dataAgreementCell = dataAgreementRow.createCell(0);
-        dataAgreementCell.setCellValue(agreement);
-        dataAgreementCell.setCellStyle(dataAgreementStyle(workbook));
-        Cell signCell = dataAgreementRow.createCell(5);
-        signCell.setCellValue(clientSign);
-        signCell.setCellStyle(userRowStyle(workbook));
-
-        Row clientAcceptSignRow = sheet.createRow(sheet.getLastRowNum() + 1);
-        CellRangeAddress range2 = (new CellRangeAddress(5,5,0,5));
-        sheet.addMergedRegion(range2);
-        RegionUtil.setBorderBottom(BorderStyle.THIN, range2, sheet);
-        RegionUtil.setBorderRight(BorderStyle.THIN, range2, sheet);
-        RegionUtil.setBorderLeft(BorderStyle.THIN, range2, sheet);
-        clientAcceptSignRow.setHeightInPoints(35);
-        Cell clientAcceptCell = clientAcceptSignRow.createCell(0);
-        clientAcceptCell.setCellValue(orderClientSign);
-        clientAcceptCell.setCellStyle(orderClientSignStyle(workbook));
-
-        sheet.setColumnWidth(0, 2000);
-        sheet.autoSizeColumn(1);
-        sheet.autoSizeColumn(2);
-        sheet.autoSizeColumn(3);
-        sheet.autoSizeColumn(4);
-        sheet.autoSizeColumn(5);
-        sheet.autoSizeColumn(6);
-        sheet.autoSizeColumn(7);
-
-        try {
-            FileOutputStream file = new FileOutputStream(PC_ENDING + user.getLastName() + "_" + orderNumber + EXCEL_EXTENSION);
-            workbook.write(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }
 
