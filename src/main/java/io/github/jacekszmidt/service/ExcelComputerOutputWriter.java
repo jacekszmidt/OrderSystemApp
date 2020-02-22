@@ -41,18 +41,18 @@ public class ExcelComputerOutputWriter implements ComputerOutputWriter {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Order Details");
 
-        userHeaders(workbook, sheet, 0, 0);
-        userRow(user, workbook, sheet, 0, 1);
-        laptopHeader(workbook, sheet, 2);
-        laptopRow(laptop, workbook, sheet, 3);
-        dataAgreementRow(workbook, sheet, sheet.getLastRowNum() + 1);
-        clientAcceptSignRow(workbook, sheet);
-        userHeaders(workbook, sheet, 3, sheet.getLastRowNum() + 4);
-        userRow(user, workbook, sheet, 1, sheet.getLastRowNum() + 1);
-        laptopHeader(workbook, sheet, 11);
-        laptopRow(laptop, workbook, sheet, 12);
-        dataAgreementConfirmationRow(workbook, sheet);
-        companyTermsRow(workbook, sheet);
+        createUserHeaders(workbook, sheet, 0, 0);
+        createUserRow(user, workbook, sheet, 0, 1);
+        createLaptopHeader(workbook, sheet, 2);
+        createLaptopRow(laptop, workbook, sheet, 3);
+        createDataAgreementRow(workbook, sheet, sheet.getLastRowNum() + 1);
+        createClientSignRow(workbook, sheet);
+        createUserHeaders(workbook, sheet, 3, sheet.getLastRowNum() + 4);
+        createUserRow(user, workbook, sheet, 1, sheet.getLastRowNum() + 1);
+        createLaptopHeader(workbook, sheet, 11);
+        createLaptopRow(laptop, workbook, sheet, 12);
+        createDataAgreementConfirmationRow(workbook, sheet);
+        createCompanyTermsRow(workbook, sheet);
 
         sheet.setColumnWidth(0, 2000);
         sheet.autoSizeColumn(1);
@@ -73,18 +73,18 @@ public class ExcelComputerOutputWriter implements ComputerOutputWriter {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Order Details");
 
-        userHeaders(workbook, sheet, 0, 0);
-        userRow(user, workbook, sheet, 0, 1);
-        personalComputerHeader(workbook, sheet, 2);
-        personalComputerRow(workbook, sheet, personalComputer, 3);
-        dataAgreementRow(workbook, sheet, sheet.getLastRowNum() + 1);
-        clientAcceptSignRow(workbook, sheet);
-        userHeaders(workbook, sheet, 3, sheet.getLastRowNum() + 4);
-        userRow(user, workbook, sheet, 1, sheet.getLastRowNum() + 1);
-        personalComputerHeader(workbook, sheet, 11);
-        personalComputerRow(workbook, sheet, personalComputer, 12);
-        dataAgreementConfirmationRow(workbook, sheet);
-        companyTermsRow(workbook, sheet);
+        createUserHeaders(workbook, sheet, 0, 0);
+        createUserRow(user, workbook, sheet, 0, 1);
+        createPersonalComputerHeader(workbook, sheet, 2);
+        createPersonalComputerRow(workbook, sheet, personalComputer, 3);
+        createDataAgreementRow(workbook, sheet, sheet.getLastRowNum() + 1);
+        createClientSignRow(workbook, sheet);
+        createUserHeaders(workbook, sheet, 3, sheet.getLastRowNum() + 4);
+        createUserRow(user, workbook, sheet, 1, sheet.getLastRowNum() + 1);
+        createPersonalComputerHeader(workbook, sheet, 11);
+        createPersonalComputerRow(workbook, sheet, personalComputer, 12);
+        createDataAgreementConfirmationRow(workbook, sheet);
+        createCompanyTermsRow(workbook, sheet);
 
         sheet.setColumnWidth(0, 2000);
         sheet.autoSizeColumn(1);
@@ -103,7 +103,7 @@ public class ExcelComputerOutputWriter implements ComputerOutputWriter {
         }
     }
 
-    private void userHeaders(Workbook workbook, Sheet sheet, int loopStart, int rowNumber) {
+    private void createUserHeaders(Workbook workbook, Sheet sheet, int loopStart, int rowNumber) {
         Row userHeader = sheet.createRow(rowNumber);
         for (int i = loopStart; i < userHeaders.size(); i++) {
             Cell cell = userHeader.createCell(i);
@@ -112,7 +112,7 @@ public class ExcelComputerOutputWriter implements ComputerOutputWriter {
         }
     }
 
-    private void laptopHeader(Workbook workbook, Sheet sheet, int rowNumber) {
+    private void createLaptopHeader(Workbook workbook, Sheet sheet, int rowNumber) {
         Row laptopHeader = sheet.createRow(rowNumber);
         for (int i = 0; i < laptopHeaders.size(); i++) {
             Cell cell = laptopHeader.createCell(i);
@@ -121,7 +121,7 @@ public class ExcelComputerOutputWriter implements ComputerOutputWriter {
         }
     }
 
-    private void personalComputerHeader(Workbook workbook, Sheet sheet, int rowNumber) {
+    private void createPersonalComputerHeader(Workbook workbook, Sheet sheet, int rowNumber) {
         Row personalComputerHeader = sheet.createRow(rowNumber);
         for (int i = 0; i < personalComputerHeaders.size(); i++) {
             Cell cell = personalComputerHeader.createCell(i);
@@ -130,7 +130,7 @@ public class ExcelComputerOutputWriter implements ComputerOutputWriter {
         }
     }
 
-    private void userRow(User user, Workbook workbook, Sheet sheet, int dataCell, int rowNumber) {
+    private void createUserRow(User user, Workbook workbook, Sheet sheet, int dataCell, int rowNumber) {
         Row userRow = sheet.createRow(rowNumber);
         if (dataCell == 0) {
             Cell nameCell = userRow.createCell(0);
@@ -159,7 +159,7 @@ public class ExcelComputerOutputWriter implements ComputerOutputWriter {
         }
     }
 
-    private void laptopRow(Laptop laptop, Workbook workbook, Sheet sheet, int rowNumber) {
+    private void createLaptopRow(Laptop laptop, Workbook workbook, Sheet sheet, int rowNumber) {
         Row laptopRow = sheet.createRow(rowNumber);
         Cell modelCell = laptopRow.createCell(0);
         modelCell.setCellValue(laptop.getModel());
@@ -178,7 +178,7 @@ public class ExcelComputerOutputWriter implements ComputerOutputWriter {
         cleanDataCell.setCellStyle(userRowStyle(workbook));
     }
 
-    private void personalComputerRow(Workbook workbook, Sheet sheet, PersonalComputer personalComputer, int rowNumber) {
+    private void createPersonalComputerRow(Workbook workbook, Sheet sheet, PersonalComputer personalComputer, int rowNumber) {
         Row personalComputerRow = sheet.createRow(rowNumber);
         Cell cpuCell = personalComputerRow.createCell(0);
         cpuCell.setCellValue(personalComputer.getCpu());
@@ -206,7 +206,7 @@ public class ExcelComputerOutputWriter implements ComputerOutputWriter {
         cleanDataCell.setCellStyle(userRowStyle(workbook));
     }
 
-    private void dataAgreementRow(Workbook workbook, Sheet sheet, int rowNumber) {
+    private void createDataAgreementRow(Workbook workbook, Sheet sheet, int rowNumber) {
         Row dataAgreementRow = sheet.createRow(rowNumber);
         CellRangeAddress range = (new CellRangeAddress(4, 4, 0, 3));
         sheet.addMergedRegion(range);
@@ -227,7 +227,7 @@ public class ExcelComputerOutputWriter implements ComputerOutputWriter {
         signCell.setCellStyle(userRowStyle(workbook));
     }
 
-    private void clientAcceptSignRow(Workbook workbook, Sheet sheet) {
+    private void createClientSignRow(Workbook workbook, Sheet sheet) {
         Row clientAcceptSignRow = sheet.createRow(sheet.getLastRowNum() + 1);
         CellRangeAddress range2 = (new CellRangeAddress(5, 5, 0, 4));
         sheet.addMergedRegion(range2);
@@ -239,7 +239,7 @@ public class ExcelComputerOutputWriter implements ComputerOutputWriter {
         clientAcceptCell.setCellStyle(orderClientSignStyle(workbook));
     }
 
-    private void dataAgreementConfirmationRow(Workbook workbook, Sheet sheet) {
+    private void createDataAgreementConfirmationRow(Workbook workbook, Sheet sheet) {
         Row dataAgreementRow = sheet.createRow(13);
         CellRangeAddress range1 = (new CellRangeAddress(13, 13, 0, 3));
         sheet.addMergedRegion(range1);
@@ -262,7 +262,7 @@ public class ExcelComputerOutputWriter implements ComputerOutputWriter {
         signCell.setCellStyle(userRowStyle(workbook));
     }
 
-    private void companyTermsRow(Workbook workbook, Sheet sheet){
+    private void createCompanyTermsRow(Workbook workbook, Sheet sheet) {
         Row companyTermsConfRow = sheet.createRow(14);
         CellRangeAddress range9 = (new CellRangeAddress(14, 14, 0, 4));
         sheet.addMergedRegion(range9);
