@@ -6,14 +6,18 @@ public class PersonalComputer {
     private String memoryRam;
     private String psu;
     private String disc;
+    private String otherInfo;
+    private String problemDescription;
     private String cleanData;
 
-    public PersonalComputer(String cpu, String motherBoard, String memoryRam, String psu, String disc, String cleanData) {
+    public PersonalComputer(String cpu, String motherBoard, String memoryRam, String psu, String disc, String otherInfo, String problemDescription, String cleanData) {
         this.cpu = cpu;
         this.motherBoard = motherBoard;
         this.memoryRam = memoryRam;
         this.psu = psu;
         this.disc = disc;
+        this.otherInfo = otherInfo;
+        this.problemDescription = problemDescription;
         this.cleanData = cleanData;
     }
 
@@ -57,6 +61,22 @@ public class PersonalComputer {
         this.disc = disc;
     }
 
+    public String getOtherInfo() {
+        return otherInfo;
+    }
+
+    public void setOtherInfo(String otherInfo) {
+        this.otherInfo = otherInfo;
+    }
+
+    public String getProblemDescription() {
+        return problemDescription;
+    }
+
+    public void setProblemDescription(String problemDescription) {
+        this.problemDescription = problemDescription;
+    }
+
     public String getCleanData() {
         return cleanData;
     }
@@ -73,6 +93,8 @@ public class PersonalComputer {
                 ", memoryRam='" + memoryRam + '\'' +
                 ", psu='" + psu + '\'' +
                 ", disc='" + disc + '\'' +
+                ", otherInfo='" + otherInfo + '\'' +
+                ", problemDescription='" + problemDescription + '\'' +
                 ", cleanData='" + cleanData + '\'' +
                 '}';
     }

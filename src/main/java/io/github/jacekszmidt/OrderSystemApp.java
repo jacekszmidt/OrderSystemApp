@@ -27,24 +27,27 @@ public class OrderSystemApp {
                 case 1:
                     USER_SERVICE.addUser();
                     break;
-                case 2:
-                    LAPTOP_SERVICE.addNewLaptop();
-                    break;
-                case 3:
-                    COMPUTER_SERVICE.addNewComputer();
-                    break;
+//                case 2:
+//                    LAPTOP_SERVICE.addNewLaptop();
+//                    break;
+//                case 3:
+//                    COMPUTER_SERVICE.addNewComputer();
+//                    break;
                 case 4:
                     USER_SERVICE.showUsers();
                     break;
-                case 5:
-                    LAPTOP_SERVICE.showLaptops();
-                    break;
-                case 6:
-                    COMPUTER_SERVICE.showComputers();
-                    break;
+//                case 5:
+//                    LAPTOP_SERVICE.showLaptops();
+//                    break;
+//                case 6:
+//                    COMPUTER_SERVICE.showComputers();
+//                    break;
                 case 7:
-                    COMPUTER_OUTPUT_WRITER.writeOutput(USER_SERVICE.getUser(), USER_SERVICE.getUserDeviceChoice(), LAPTOP_SERVICE.getLaptop());
-                    COMPUTER_OUTPUT_WRITER.writeOutput(USER_SERVICE.getUser(), USER_SERVICE.getUserDeviceChoice(), COMPUTER_SERVICE.getPersonalComputer());
+                    COMPUTER_OUTPUT_WRITER.writeOutput(USER_SERVICE.getUser(), LAPTOP_SERVICE.getLaptop());
+                    break;
+                case 8:
+                    COMPUTER_OUTPUT_WRITER.writeOutput(USER_SERVICE.getUser(), COMPUTER_SERVICE.getPersonalComputer());
+                    break;
 
             }
         }
@@ -58,7 +61,7 @@ public class OrderSystemApp {
     private int getUserChoice() {
         while (true) {
             String choice = SCANNER.nextLine();
-            if (!NumberUtils.isParsable(choice) || Integer.parseInt(choice) > 7 || Integer.parseInt(choice) < 0) {
+            if (!NumberUtils.isParsable(choice) || Integer.parseInt(choice) > 8 || Integer.parseInt(choice) < 0) {
                 LOGGER.info("Choose correct number");
                 continue;
             }
@@ -69,20 +72,15 @@ public class OrderSystemApp {
     private void printMainMenu() {
         String mainMenu = "\n0: exit" + System.lineSeparator() +
                 "1: add user" + System.lineSeparator() +
-                "2: add laptop" + System.lineSeparator() +
-                "3: add computer" + System.lineSeparator() +
+//                "2: add laptop" + System.lineSeparator() +
+//                "3: add computer" + System.lineSeparator() +
                 "4: show users" + System.lineSeparator() +
                 "5: show laptops" + System.lineSeparator() +
                 "6: show computers" + System.lineSeparator() +
-                "7: show excel file";
+                "7: assign laptop to the user" + System.lineSeparator() +
+                "8: assign PC to the user" + System.lineSeparator();
 
         LOGGER.info(mainMenu);
     }
 
 }
-
-
-
-
-
-
