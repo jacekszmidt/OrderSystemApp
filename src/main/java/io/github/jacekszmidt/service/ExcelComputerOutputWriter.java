@@ -3,6 +3,7 @@ package io.github.jacekszmidt.service;
 import io.github.jacekszmidt.model.Laptop;
 import io.github.jacekszmidt.model.PersonalComputer;
 import io.github.jacekszmidt.model.User;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.RegionUtil;
@@ -11,7 +12,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.FileOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -37,7 +38,7 @@ public class ExcelComputerOutputWriter implements ComputerOutputWriter {
     private long orderNumber = (System.currentTimeMillis() / 1000);
 
     @Override
-    public void writeOutput(User user, Laptop laptop) {
+    public Pair<String, byte[]> writeOutput(User user, Laptop laptop) {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Order Details");
 
@@ -61,15 +62,17 @@ public class ExcelComputerOutputWriter implements ComputerOutputWriter {
         sheet.autoSizeColumn(4);
 
         try {
-            FileOutputStream file = new FileOutputStream(LAP_ENDING + user.getLastName() + "_" + orderNumber + EXCEL_EXTENSION);
-            workbook.write(file);
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            workbook.write(bos);
+            return Pair.of(LAP_ENDING + user.getLastName() + "_" + orderNumber + EXCEL_EXTENSION, bos.toByteArray());
         } catch (IOException e) {
             LOGGER.error("Error", e);
+            return null;
         }
     }
 
     @Override
-    public void writeOutput(User user, PersonalComputer personalComputer) {
+    public Pair<String, byte[]> writeOutput(User user, PersonalComputer personalComputer) {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Order Details");
 
@@ -91,10 +94,12 @@ public class ExcelComputerOutputWriter implements ComputerOutputWriter {
         sheet.autoSizeColumn(7);
 
         try {
-            FileOutputStream file = new FileOutputStream(PC_ENDING + user.getLastName() + "_" + orderNumber + EXCEL_EXTENSION);
-            workbook.write(file);
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            workbook.write(bos);
+            return Pair.of(PC_ENDING + user.getLastName() + "_" + orderNumber + EXCEL_EXTENSION, bos.toByteArray());
         } catch (IOException e) {
             LOGGER.error("Error", e);
+            return null;
         }
     }
 
@@ -417,7 +422,7 @@ public class ExcelComputerOutputWriter implements ComputerOutputWriter {
         signCell.setCellStyle(userRowStyle(workbook));
     }
 
-    private void companyTermsRow(Workbook workbook, Sheet sheet){
+    private void companyTermsRow(Workbook workbook, Sheet sheet) {
         Row companyTermsConfRow = sheet.createRow(14);
         CellRangeAddress range9 = (new CellRangeAddress(14, 14, 0, 4));
         sheet.addMergedRegion(range9);
