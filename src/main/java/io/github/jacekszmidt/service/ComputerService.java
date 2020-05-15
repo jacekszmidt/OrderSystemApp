@@ -23,10 +23,14 @@ public class ComputerService {
         LOGGER.info("Podaj model zasilacza: ");
         String psu = SCANNER.nextLine();
         LOGGER.info("Podaj model dysku: ");
-        String diSCANNER = SCANNER.nextLine();
+        String disc = SCANNER.nextLine();
+        LOGGER.info("Inne?");
+        String otherInfo = SCANNER.nextLine();
+        LOGGER.info("Opis usterki");
+        String problemDescription = SCANNER.nextLine();
         LOGGER.info("Czy mozna usuwac dane? ");
         String cleanData = SCANNER.nextLine();
-        return new PersonalComputer(cpu, motherBoard, memoryRam, psu, diSCANNER, cleanData);
+        return new PersonalComputer(cpu, motherBoard, memoryRam, psu, disc, otherInfo, problemDescription, cleanData);
     }
 
     public void addNewComputer() {
